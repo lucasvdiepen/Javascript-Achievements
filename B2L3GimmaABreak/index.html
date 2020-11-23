@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Gimma a break</title>
+        <script>
+            window.onload = function() {
+                var timeText = document.getElementById("time");
+                var image = document.getElementById("image");
+
+                var dateNow = new Date();
+                var breakTime = new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate(), 10, 34, 0, 0);
+                var breakEndTime = new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate(), 10, 35, 0, 0);
+
+                var e = setInterval(UpdateTimer, 1000);
+
+                function UpdateTimer()
+                {
+                    var date = new Date();
+                    timeText.innerHTML = "Break starts: " + breakTime.toTimeString() + "<br>Break ends: " + breakEndTime.toTimeString() + "<br>Time: " + AddZeros(date.getHours()) + ":" + AddZeros(date.getMinutes()) + ":" + AddZeros(date.getSeconds());
+                    if(date > breakTime && date < breakEndTime)
+                    {
+                        Break();
+                    }
+                    else
+                    {
+                        EndBreak();
+                    }
+                }
+
+                function AddZeros(value)
+                {
+                    if(value < 10)
+                    {
+                        return "0" + value;
+                    }
+
+                    return value;
+                }
+
+                function Break()
+                {
+                    image.src = "break.jpeg";
+                }
+
+                function EndBreak()
+                {
+                    image.src = "work.jfif";
+                }
+            };
+        </script>
+    </head>
+    <body>
+        <p id="time">Time: </p>
+        <img id="image" src="work.jfif" height="400px" width="400px"/>
+    </body>
+</html>
