@@ -18,11 +18,10 @@ function update(){
     
     var col = size.value;
     var rows = cols.value;
-    console.log("col: " + col + " row: " + rows);
 
     for(var i = 0; i < col; i++)
     {
-        if(col % rows == 0)
+        if(i % rows == 0)
         {
             newGridText += "<br>";
         }
@@ -30,6 +29,5 @@ function update(){
         newGridText += "X";
     }
 
-    console.log(newGridText);
-    grid.text = newGridText;
+    grid.innerHTML = newGridText;
 }
