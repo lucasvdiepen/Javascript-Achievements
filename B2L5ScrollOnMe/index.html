@@ -2,5 +2,23 @@
     <head>
         <meta charset="utf-8">
         <title>Scroll on me</title>
+        <script>
+            window.onload = function() {
+                var scrollText = document.getElementById("scrollText");
+                var hoverText = document.getElementById("hoverText");
+                var resetButton = document.getElementById("resetButton");
+                
+                scrollText.addEventListener("wheel", ()=>{ scrollText.innerHTML += "!" });
+
+                hoverText.addEventListener("mouseenter", ()=>{hoverText.innerHTML += "!" });
+                
+                resetButton.addEventListener("click", ()=>{scrollText.innerHTML = "Scroll me"; hoverText.innerHTML = "Hover on me"});
+            }
+        </script>
     </head>
+    <body>
+        <h1 id="scrollText">Scroll me</h1>
+        <h1 id="hoverText">Hover on me</h1>
+        <input type="button" id="resetButton" value="Reset"/>
+    </body>
 </html>
