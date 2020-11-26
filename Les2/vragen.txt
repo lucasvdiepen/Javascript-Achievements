@@ -1,0 +1,13 @@
+Wat is het voordeel/nadeel van "use strict"?
+
+Het voordeel is dat je niet perongeluk de zelfde naam kan gebruiken
+
+Er is niet echt een nadeel
+
+Wat wordt bedoeld met "hoisting" binnen javascript?
+
+De manier hoe javascript de code langs gaat. bijvoorbeeld dat je eerst een variable moet maken voordat je hem kan gebruiken
+
+Wat is camel Case?
+
+Variabelen in 1 woord opschrijven. Beginnend met een kleine letter. Bijvoorbeeld: lowerCamelCase
