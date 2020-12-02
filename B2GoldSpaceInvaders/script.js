@@ -1,76 +1,31 @@
+//Sprites
+let playerSprite;
+let enemySprite;
+
 //Player values
-let playerImage;
 let player;
-let playerStartHeight = 820;
+let playerStartHeight = 620;
 
 //Bullet values
 let bullets = [];
 
+//Enemy values
+let enemies = [];
+let enemyDirection = 1;
+let enemyStepDelay = 1500;
+
+let lastEnemyMove = -3000;
+
+//Screen values
 let screenWidth = 1200;
-let screenHeight = 900;
+let screenHeight = 700;
 
-class Bullet{
-    speed = 10;
-    x = -1;
-    y = playerStartHeight;
-
-    constructor(_x)
-    {
-        x = _x;
-    }
-
-    Update()
-    {
-
-    }
-
-    Draw()
-    {
-
-    }
-}
-
-class Player {
-    speed = 5;
-    x = 0;
-    sprite = null;
-    moveDirection = 0;
-
-    constructor(_playerImage = playerImage)
-    {
-        this.sprite = _playerImage;
-        this.x = screenWidth / 2;
-    }
-
-    Update()
-    {
-        if((this.x <= 100 && this.moveDirection != 1) || (this.x >= screenWidth - 100 && this.moveDirection != -1))
-        {
-            //freeze movement
-        }
-        else
-        {
-            this.x += this.moveDirection * this.speed;
-        }
-        
-        
-    }
-
-    Draw()
-    {
-        playerImage.resize(50, 50);
-        image(player.sprite, player.x, playerStartHeight);
-    }
-
-    Shoot()
-    {
-        bullets.push(Bullet(this.x));
-    }
-}
+function Millis(){ return performance.now();}
 
 function preload()
 {
-    playerImage = loadImage("Art/player.png");
+    playerSprite = loadImage("Art/player.png");
+    enemySprite = loadImage("Art/enemy_black.png");
 }
 
 function setup() {
@@ -87,7 +42,21 @@ function update(){
     //Update bullets
     for(var i = bullets.length - 1; i>=0; i--)
     {
-        bullets[i].Update();
+        if(bullets[i].Update()) bullets.splice(i, 1);
+    }
+
+    //Update enemies
+    if(Millis() > (lastEnemyMove + enemyStepDelay))
+    {
+        let switchDirection = false;
+
+        for(var i = 0; i < enemies.length; i++)
+        {
+            if(enemies[i].Update()) switchDirection = true; //Update return true if one of the enemies hit the wall
+        }
+
+        if(switchDirection) enemyDirection *= -1;
+        lastEnemyMove = Millis();
     }
 }
 
@@ -98,12 +67,19 @@ function draw() {
     //Draw
     background(220);
     
-    //draw player
+    //Draw player
     player.Draw();
 
+    //Draw bullets
     for(var i = 0; i < bullets.length; i++)
     {
         bullets[i].Draw();
+    }
+
+    //Draw enemies
+    for(var i = 0; i < enemies.length; i++)
+    {
+        enemies[i].Draw();
     }
 }
 
@@ -111,6 +87,8 @@ function keyPressed()
 {
     if(keyCode == LEFT_ARROW) player.moveDirection = -1;
     else if(keyCode == RIGHT_ARROW) player.moveDirection = 1;
+    else if(keyCode == 32) player.Shoot();
+    else if(keyCode == UP_ARROW) enemies.push(new Enemy(enemySprite, 250, 50));
 }
 
 function keyReleased()
