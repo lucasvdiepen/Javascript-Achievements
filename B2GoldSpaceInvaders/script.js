@@ -5,6 +5,8 @@ let enemySprite;
 //Player values
 let player;
 let playerStartHeight = 620;
+let playerWidth = 50;
+let playerHeight = 50;
 
 //Bullet values
 let bullets = [];
@@ -13,12 +15,24 @@ let bullets = [];
 let enemies = [];
 let enemyDirection = 1;
 let enemyStepDelay = 1500;
+let enemyWidth = 40;
+let enemyHeight = 40;
 
 let lastEnemyMove = -3000;
 
 //Screen values
 let screenWidth = 1200;
 let screenHeight = 700;
+
+function SpawnEnemies(){
+    x = 200;
+    y = 50;
+    for(var i = 0; i < 11; i++)
+    {
+        enemies.push(new Enemy(enemySprite, x, y));
+        x += 55;
+    }
+}
 
 function Millis(){ return performance.now();}
 
@@ -88,7 +102,7 @@ function keyPressed()
     if(keyCode == LEFT_ARROW) player.moveDirection = -1;
     else if(keyCode == RIGHT_ARROW) player.moveDirection = 1;
     else if(keyCode == 32) player.Shoot();
-    else if(keyCode == UP_ARROW) enemies.push(new Enemy(enemySprite, 250, 50));
+    else if(keyCode == UP_ARROW) SpawnEnemies();
 }
 
 function keyReleased()

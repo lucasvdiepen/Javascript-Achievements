@@ -12,7 +12,8 @@ class Player {
 
     Update()
     {
-        if((this.x <= 100 && this.moveDirection != 1) || (this.x >= screenWidth - 100 && this.moveDirection != -1))
+        let x = this.x + (playerWidth / 2);
+        if((x <= 100 && this.moveDirection != 1) || (x >= screenWidth - 100 && this.moveDirection != -1))
         {
             //freeze movement
         }
@@ -24,12 +25,12 @@ class Player {
 
     Draw()
     {
-        playerSprite.resize(50, 50);
+        playerSprite.resize(enemyHeight, enemyWidth);
         image(player.sprite, player.x, playerStartHeight);
     }
 
     Shoot()
     {
-        bullets.push(new Bullet(this.x + 25));
+        bullets.push(new Bullet(this.x + (enemyWidth / 2)));
     }
 }

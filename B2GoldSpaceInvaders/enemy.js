@@ -20,7 +20,7 @@ class Enemy{
 
     Draw()
     {
-        this.sprite.resize(50, 50);
+        this.sprite.resize(enemyWidth, enemyHeight);
         image(this.sprite, this.x, this.y);
     }
 }
