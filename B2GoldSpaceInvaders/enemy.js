@@ -1,11 +1,18 @@
 class Enemy{
     sprite = null;
+    normalSprite = null;
+    walkSprite = null;
+    pointsToGive = 0;
     x = -1;
     y = -1;
+    walkAnimation = false;
 
-    constructor(_sprite, _x, _y)
+    constructor(_normalSprite, _walkSprite, _pointsToGive, _x, _y)
     {
-        this.sprite = _sprite;
+        this.sprite = _normalSprite;
+        this.normalSprite = _normalSprite;
+        this.walkSprite = _walkSprite;
+        this.pointsToGive = _pointsToGive;
         this.x = _x;
         this.y = _y;
     }
@@ -14,6 +21,11 @@ class Enemy{
     {
         //Do step
         this.x += 50 * enemyDirection;
+
+        //Do walk animation
+        if(this.walkAnimation) { this.sprite = this.normalSprite; this.walkAnimation = false}
+        else { this.sprite = this.walkSprite; this.walkAnimation = true;}
+
         //check if at border
         if(this.x <= 100 || this.x >= (screenWidth - 100)) return true;
     }

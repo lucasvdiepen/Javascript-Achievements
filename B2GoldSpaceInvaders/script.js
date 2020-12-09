@@ -1,6 +1,11 @@
 //Sprites
 let playerSprite;
 let enemySprite;
+let enemyWalkSprite;
+let enemy2Sprite;
+let enemy2WalkSprite;
+let enemy3Sprite;
+let enemy3WalkSprite;
 
 //Player values
 let player;
@@ -27,11 +32,22 @@ let screenHeight = 700;
 function SpawnEnemies(){
     x = 200;
     y = 50;
-    for(var i = 0; i < 11; i++)
+    for(var j = 0; j < 5; j++)
     {
-        enemies.push(new Enemy(enemySprite, x, y));
-        x += 55;
+        let sprite = null;
+        let walkSprite = null;
+        if(j == 0) {sprite = enemy3Sprite; walkSprite = enemy3WalkSprite;}
+        else if(j == 1 || j == 2) {sprite = enemySprite; walkSprite = enemyWalkSprite;}
+        else if(j == 3 || j == 4){sprite = enemy2Sprite; walkSprite = enemy2WalkSprite;}
+        for(var i = 0; i < 11; i++)
+        {
+            enemies.push(new Enemy(sprite, walkSprite, 20, x, y));
+            x += 60;
+        }
+        x = 200;
+        y += 50;
     }
+    
 }
 
 function Millis(){ return performance.now();}
@@ -39,12 +55,18 @@ function Millis(){ return performance.now();}
 function preload()
 {
     playerSprite = loadImage("Art/player.png");
-    enemySprite = loadImage("Art/enemy_black.png");
+    enemySprite = loadImage("Art/enemy1.png");
+    enemyWalkSprite = loadImage("Art/enemy1Walk.png");
+    enemy2Sprite = loadImage("Art/enemy2.png");
+    enemy2WalkSprite = loadImage("Art/enemy2Walk.png");
+    enemy3Sprite = loadImage("Art/enemy3.png");
+    enemy3WalkSprite = loadImage("Art/enemy3Walk.png");
 }
 
 function setup() {
     createCanvas(screenWidth, screenHeight);
     player = new Player();
+    SpawnEnemies();
 }
 
 function update(){
