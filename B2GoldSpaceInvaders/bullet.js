@@ -13,7 +13,7 @@ class Bullet{
         //check for collision with enemy
         for(var i = enemies.length - 1; i>=0; i--)
         {
-            if(this.x >= enemies[i].x && this.y >= enemies[i].y && this.x <= (enemies[i].x + 50) && this.y <= (enemies[i].y + 50)) //bullet collision with enemy
+            if(this.x >= enemies[i].x && this.y >= enemies[i].y && this.x <= (enemies[i].x + enemyWidth) && this.y <= (enemies[i].y + enemyHeight)) //bullet collision with enemy
             {
                 enemies.splice(i, 1);
                 return true;
