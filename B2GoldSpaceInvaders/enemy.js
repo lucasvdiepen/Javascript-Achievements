@@ -17,6 +17,11 @@ class Enemy{
         this.y = _y;
     }
 
+    Shoot()
+    {
+        bullets.push(new Bullet(this.x + (enemyWidth / 2), this.y + enemyHeight, 1));
+    }
+
     Update()
     {
         //Do step
