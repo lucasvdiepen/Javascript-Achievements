@@ -52,6 +52,10 @@ class Bullet{
                     //spawn explosion effect
                     explosions.push(new Explosion(enemies[i].x, enemies[i].y));
                     
+                    //add points
+                    player.points += enemies[i].pointsToAdd;
+
+                    //remove enemy
                     enemies.splice(i, 1);
                     return true; //removes this bullet
                 }

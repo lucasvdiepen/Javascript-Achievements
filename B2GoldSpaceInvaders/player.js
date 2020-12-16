@@ -27,12 +27,6 @@ class Player {
         this.lives -= 1;
         this.isDead = true;
         this.deadTime = Millis();
-
-        if(this.lives <= 0)
-        {
-            //game over
-            console.log("Game over!");
-        }
     }
 
     Reset()

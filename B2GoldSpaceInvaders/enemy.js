@@ -2,17 +2,17 @@ class Enemy{
     sprite = null;
     normalSprite = null;
     walkSprite = null;
-    pointsToGive = 0;
+    pointsToAdd = 0;
     x = -1;
     y = -1;
     walkAnimation = false;
 
-    constructor(_normalSprite, _walkSprite, _pointsToGive, _x, _y)
+    constructor(_normalSprite, _walkSprite, _pointsToAdd, _x, _y)
     {
         this.sprite = _normalSprite;
         this.normalSprite = _normalSprite;
         this.walkSprite = _walkSprite;
-        this.pointsToGive = _pointsToGive;
+        this.pointsToAdd = _pointsToAdd;
         this.x = _x;
         this.y = _y;
     }

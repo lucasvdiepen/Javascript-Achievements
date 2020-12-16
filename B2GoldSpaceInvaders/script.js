@@ -32,7 +32,7 @@ let explosionHeight = 40;
 let enemies = [];
 let enemyDirection = 1;
 let enemyStepDelay = 1500;
-let enemyShootDelay = 500;
+let enemyShootDelay = 1000;
 let enemyWidth = 40;
 let enemyHeight = 40;
 
@@ -59,13 +59,13 @@ function SpawnEnemies(){
     {
         let sprite = null;
         let walkSprite = null;
-        let pointsToGive = 0;
-        if(j == 0) {sprite = enemy3Sprite; walkSprite = enemy3WalkSprite; pointsToGive = 30;}
-        else if(j == 1 || j == 2) {sprite = enemySprite; walkSprite = enemyWalkSprite; pointsToGive = 20;}
-        else if(j == 3 || j == 4){sprite = enemy2Sprite; walkSprite = enemy2WalkSprite; pointsToGive = 10;}
+        let pointsToAdd = 0;
+        if(j == 0) {sprite = enemy3Sprite; walkSprite = enemy3WalkSprite; pointsToAdd = 30;}
+        else if(j == 1 || j == 2) {sprite = enemySprite; walkSprite = enemyWalkSprite; pointsToAdd = 20;}
+        else if(j == 3 || j == 4){sprite = enemy2Sprite; walkSprite = enemy2WalkSprite; pointsToAdd = 10;}
         for(var i = 0; i < 11; i++)
         {
-            enemies.push(new Enemy(sprite, walkSprite, pointsToGive, x, y));
+            enemies.push(new Enemy(sprite, walkSprite, pointsToAdd, x, y));
             x += 60;
         }
         x = 200;
@@ -120,6 +120,12 @@ function StartGame()
 
 function update(){
     //Update all game objects
+
+    if(player.lives <= 0)
+    {
+        console.log("Game over!");
+        StartGame();
+    }
 
     //Update player
     player.Update();
@@ -207,6 +213,12 @@ function draw() {
     {
         obstacles[i].Draw();
     }
+
+    //Draw text
+    textSize(25);
+    fill(0);
+    text("Lives: " + player.lives, 10, 27);
+    text("Points: " + player.points, 10, 55);
 }
 
 function keyPressed()
