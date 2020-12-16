@@ -7,6 +7,7 @@ class Player {
     points = 0;
     isDead = false;
     deadTime = -3000;
+    shootTime = -3000;
 
     constructor(_lives = startingLives, _sprite = playerSprite, _speed = defaultSpeed)
     {
@@ -68,7 +69,12 @@ class Player {
     {
         if(!this.isDead)
         {
-            bullets.push(new Bullet(this.x + (playerWidth / 2), playerStartHeight, -1));
+            if(Millis() > (this.shootTime + playerShootDelay))
+            {
+                bullets.push(new Bullet(this.x + (playerWidth / 2), playerStartHeight, -1));
+                this.shootTime = Millis();
+            }
+            
         }
     }
 }
