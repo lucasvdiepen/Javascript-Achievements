@@ -25,7 +25,19 @@ class Enemy{
     Update()
     {
         //Do step
-        this.x += 50 * enemyDirection;
+
+        if(enemyDown)
+        {
+            this.y += enemyDownStep;
+
+            //check if enemy is lower than player here
+            if(this.y >= (playerStartHeight - playerHeight))
+            {
+                //game over
+                console.log("Game over!");
+            }
+        }
+        else this.x += enemySideStep * enemyDirection;
 
         //Do walk animation
         if(this.walkAnimation) { this.sprite = this.normalSprite; this.walkAnimation = false}

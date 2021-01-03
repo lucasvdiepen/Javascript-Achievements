@@ -50,13 +50,31 @@ class Bullet{
                 if(this.x >= enemies[i].x && this.y >= enemies[i].y && this.x <= (enemies[i].x + enemyWidth) && this.y <= (enemies[i].y + enemyHeight)) //bullet collided with enemy
                 {
                     //spawn explosion effect
-                    explosions.push(new Explosion(enemies[i].x, enemies[i].y));
+                    explosions.push(new Explosion(explosionSprite, enemies[i].x, enemies[i].y, explosionWidth, explosionHeight));
                     
                     //add points
                     player.points += enemies[i].pointsToAdd;
 
                     //remove enemy
                     enemies.splice(i, 1);
+                    return true; //removes this bullet
+                }
+            }
+
+            //check for collision with ufo
+            for(var i = ufos.length - 1; i>=0; i--)
+            {
+                if(this.x >= ufos[i].x && this.y >= ufoStartHeight && this.x <= (ufos[i].x + ufoWidth) && this.y <= (ufoStartHeight + ufoHeight))
+                {
+                    explosions.push(new Explosion(ufoExplosionSprite, ufos[i].x, ufoStartHeight, ufoWidth, ufoHeight));
+
+                    let ufoPointsToAdd = ChooseRandom(ufoPoints);
+
+                    ufoText.push(new UfoText(ufoPointsToAdd.toString(), ufos[i].x));
+
+                    player.points += ufoPointsToAdd;
+
+                    ufos.splice(i, 1);
                     return true; //removes this bullet
                 }
             }
@@ -69,7 +87,7 @@ class Bullet{
             {
                 if(!player.isDead)
                 {
-                    explosions.push(new Explosion(player.x, playerStartHeight));
+                    explosions.push(new Explosion(explosionSprite, player.x, playerStartHeight, explosionWidth, explosionHeight));
 
                     player.Hit();
                     return true; //removes this bullet

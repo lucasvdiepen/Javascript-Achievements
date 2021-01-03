@@ -8,6 +8,7 @@ let enemy3Sprite;
 let enemy3WalkSprite;
 let explosionSprite;
 let ufoSprite;
+let ufoExplosionSprite;
 
 //Game values
 let highscore = 0;
@@ -35,9 +36,12 @@ let explosionHeight = 40;
 //Enemy values
 let enemies = [];
 let enemyDirection = 1;
+let enemyDown = false;
 let enemyStartingStepDelay = 1500;
 let enemyStepDelay = 1500;
 let enemyShootDelay = 1000;
+let enemySideStep = 50;
+let enemyDownStep = 15;
 let enemyWidth = 40;
 let enemyHeight = 40;
 
@@ -46,10 +50,11 @@ let lastEnemyShoot = -3000;
 
 //Ufo values
 let ufos = [];
-let ufoWidth = 40;
+let ufoWidth = 60;
 let ufoHeight = 40;
-let defaultUfoSpeed = 5;
+let defaultUfoSpeed = 3;
 let ufoStartHeight = 100;
+let ufoPoints = [100, 200, 300, 400, 500];
 
 //Screen values
 let screenWidth = 1200;
@@ -63,6 +68,10 @@ let blockWidth = 12;
 let blockHeight = 7;
 
 let blocksInRow = 10;
+
+//ufo text values
+let ufoText = [];
+let ufoTextDelay = 2000;
 
 function SpawnEnemies(){
     x = 200;
@@ -93,6 +102,11 @@ function getRandomInt(max)
     return Math.floor(Math.random() * Math.floor(max));
 }
 
+function ChooseRandom(choices) {
+    var index = Math.floor(Math.random() * choices.length);
+    return choices[index];
+  }
+
 function preload()
 {
     playerSprite = loadImage("Art/player.png");
@@ -104,6 +118,7 @@ function preload()
     enemy3WalkSprite = loadImage("Art/enemy3Walk.png");
     explosionSprite = loadImage("Art/explosion.png");
     ufoSprite = loadImage("Art/ufo.png");
+    ufoExplosionSprite = loadImage("Art/ufoExplosion.png");
 }
 
 function setup() {
@@ -124,6 +139,8 @@ function StartGame()
     obstacles = [];
     bullets = [];
     explosions = [];
+    ufos = [];
+    ufoText = [];
 
     SpawnEnemies();
 
@@ -202,17 +219,19 @@ function update(){
 
         for(var i = 0; i < enemies.length; i++)
         {
-            if(enemies[i].Update()) switchDirection = true; //Update return true if one of the enemies hit the wall
+            if(enemies[i].Update() && !enemyDown) switchDirection = true; //Update return true if one of the enemies hit the wall
         }
 
         if(switchDirection)
         {
+            enemyDown = true;
             enemyDirection *= -1;
             if(enemyStepDelay > 200)
             {
                 enemyStepDelay -= 100;
             }
         }
+        else enemyDown = false;
         lastEnemyMove = Millis();
     }
 
@@ -220,6 +239,12 @@ function update(){
     for(var i = 0; i < ufos.length; i++)
     {
         ufos[i].Update();
+    }
+
+    //Ufo text
+    for(var i = ufoText.length - 1; i>=0; i--)
+    {
+        if(Millis() > (ufoText[i].startTime + ufoTextDelay)) ufoText.splice(i, 1);
     }
 
     //Enemy shoot
@@ -276,12 +301,21 @@ function draw() {
         obstacles[i].Draw();
     }
 
+    //Draw ufo text
+    for(var i = 0; i < ufoText.length; i++)
+    {
+        ufoText[i].Draw();
+    }
+
     //Draw text
     textSize(25);
     fill(0);
+    textAlign(LEFT);
     text("Lives: " + player.lives, 10, 27);
     text("Points: " + player.points, 10, 55);
-    text("Highscore: " + highscore, 970, 27);
+
+    textAlign(RIGHT);
+    text("Highscore: " + highscore, 1190, 27);
 }
 
 function keyPressed()

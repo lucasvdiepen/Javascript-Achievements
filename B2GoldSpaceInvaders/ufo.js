@@ -26,3 +26,24 @@ class Ufo{
         image(this.sprite, this.x, ufoStartHeight);
     }
 }
+
+class UfoText{
+    text = "";
+    x = -1;
+    startTime = -3000;
+
+    constructor(_text, _x)
+    {
+        this.text = _text;
+        this.x = _x;
+        this.startTime = Millis();
+    }
+
+    Draw()
+    {
+        textSize(25);
+        textAlign(CENTER);
+        fill(255, 0, 0);
+        text(this.text, this.x + (ufoWidth / 2), ufoStartHeight + (ufoHeight / 2));
+    }
+}
