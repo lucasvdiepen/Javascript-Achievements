@@ -5,7 +5,7 @@ class Ufo{
     moveDirection = 1;
     wallTouches = 0;
 
-    constructor(_x, _speed = defaultUfoSpeed, _sprite = ufoSprite)
+    constructor(_x = ufoStartWidth, _speed = defaultUfoSpeed, _sprite = ufoSprite)
     {
         this.x = _x;
         this.sprite = _sprite;

@@ -62,8 +62,12 @@ let ufoWidth = 60;
 let ufoHeight = 40;
 let defaultUfoSpeed = 0.15;
 let ufoStartHeight = 50;
+let ufoStartWidth = 150;
 let ufoPoints = [100, 200, 300, 400, 500];
 let ufoWallTouches = 2;
+let ufoSpawnDelay = 45000;
+
+let lastUfoSpawn = 0;
 
 //Screen values
 let screenWidth = 1200;
@@ -156,13 +160,15 @@ function StartGame()
 
     SpawnEnemies();
 
-    ufos.push(new Ufo(150));
+    //ufos.push(new Ufo());
 
     SpawnObstacles();
 
     enemyStepDelay = enemyStartingStepDelay;
 
     player.Reset();
+
+    lastUfoSpawn = Millis();
 
     gameRunning = true;
 }
@@ -192,7 +198,6 @@ function update(){
     let millis = Millis();
 
     deltaTime = millis - lastTime;
-    console.log(deltaTime);
 
     lastTime = millis;
 
@@ -278,6 +283,13 @@ function update(){
         if(ufos[i].Update()) ufos.splice(i, 1);
     }
 
+    //spawn ufo
+    if(millis > (lastUfoSpawn + ufoSpawnDelay))
+    {
+        ufos.push(new Ufo());
+        lastUfoSpawn = millis;
+    }
+
     //Ufo text
     for(var i = ufoText.length - 1; i>=0; i--)
     {
@@ -357,8 +369,8 @@ function draw() {
 
 function keyPressed()
 {
-    if(keyCode == LEFT_ARROW) player.moveDirection = -1;
-    else if(keyCode == RIGHT_ARROW) player.moveDirection = 1;
+    if(keyCode == LEFT_ARROW) player.leftPressed = true;
+    else if(keyCode == RIGHT_ARROW) player.rightPressed = true;
     else if(keyCode == 32) player.Shoot();
     else if(keyCode == UP_ARROW) obstacles[0].rows[0].skipAbove += 1;
     else if(keyCode == DOWN_ARROW) obstacles[0].rows[0].skipBelow += 1;
@@ -366,6 +378,6 @@ function keyPressed()
 
 function keyReleased()
 {
-    if(keyCode == LEFT_ARROW) player.moveDirection = 0;
-    if(keyCode == RIGHT_ARROW) player.moveDirection = 0;
+    if(keyCode == LEFT_ARROW) player.leftPressed = false;
+    if(keyCode == RIGHT_ARROW) player.rightPressed = false;
 }

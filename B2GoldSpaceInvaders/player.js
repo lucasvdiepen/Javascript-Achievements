@@ -2,12 +2,13 @@ class Player {
     speed = 5;
     x = 0;
     sprite = null;
-    moveDirection = 0;
     lives = 3;
     points = 0;
     isDead = false;
     deadTime = -3000;
     shootTime = -3000;
+    leftPressed = false;
+    rightPressed = false;
 
     constructor(_lives = startingLives, _sprite = playerSprite, _speed = playerSpeed)
     {
@@ -35,23 +36,35 @@ class Player {
         this.lives = startingLives;
         this.x = screenWidth / 2;
         this.points = 0;
-        this.moveDirection = 0;
         this.isDead = false;
         this.deadTime = -3000;
     }
 
     Update()
     {
+        let moveDirection = 0;
+
+        //set movement direction
+        if(this.leftPressed && this.rightPressed)
+        {
+            
+        }
+        else
+        {
+            if(this.leftPressed) moveDirection = -1;
+            if(this.rightPressed) moveDirection = 1;
+        }
+
         if(!this.isDead)
         {
             let x = this.x + (playerWidth / 2);
-            if((x <= 100 && this.moveDirection != 1) || (x >= screenWidth - 100 && this.moveDirection != -1))
+            if((x <= 100 && moveDirection != 1) || (x >= screenWidth - 100 && moveDirection != -1))
             {
                 //freeze movement
             }
             else
             {
-                this.x += this.moveDirection * this.speed * deltaTime;
+                this.x += moveDirection * this.speed * deltaTime;
             }
         }
     }
