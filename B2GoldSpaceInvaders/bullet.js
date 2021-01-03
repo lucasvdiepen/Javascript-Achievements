@@ -5,7 +5,7 @@ class Bullet{
     direction = 0;
     pointsToGive = 0;
 
-    constructor(_x, _y, _direction, _pointsToGive, _speed = 10)
+    constructor(_x, _y, _direction, _pointsToGive, _speed = defaultBulletSpeed)
     {
         this.x = _x;
         this.y = _y;
@@ -96,7 +96,7 @@ class Bullet{
         }
 
         if(this.y <= -100 || this.y >= screenHeight + 100) return true; //removes this bullet
-        else this.y += this.direction * this.speed;
+        else this.y += this.direction * this.speed * deltaTime;
     }
 
     Draw()

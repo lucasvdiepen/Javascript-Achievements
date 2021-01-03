@@ -9,7 +9,7 @@ class Player {
     deadTime = -3000;
     shootTime = -3000;
 
-    constructor(_lives = startingLives, _sprite = playerSprite, _speed = defaultSpeed)
+    constructor(_lives = startingLives, _sprite = playerSprite, _speed = playerSpeed)
     {
         this.sprite = _sprite;
         this.x = screenWidth / 2;
@@ -51,7 +51,7 @@ class Player {
             }
             else
             {
-                this.x += this.moveDirection * this.speed;
+                this.x += this.moveDirection * this.speed * deltaTime;
             }
         }
     }

@@ -14,7 +14,9 @@ let ufoExplosionSprite;
 let highscore = 0;
 
 let startingLives = 3;
-let defaultSpeed = 5;
+
+let lastTime = 0;
+let deltaTime = 0;
 
 //Player values
 let player;
@@ -23,9 +25,12 @@ let playerWidth = 50;
 let playerHeight = 50;
 let playerDeadDelay = 2000;
 let playerShootDelay = 500;
+let playerSpeed = 0.5;
 
 //Bullet values
 let bullets = [];
+
+let defaultBulletSpeed = 0.7;
 
 //Explosion values
 let explosions = [];
@@ -52,7 +57,7 @@ let lastEnemyShoot = -3000;
 let ufos = [];
 let ufoWidth = 60;
 let ufoHeight = 40;
-let defaultUfoSpeed = 3;
+let defaultUfoSpeed = 0.3;
 let ufoStartHeight = 100;
 let ufoPoints = [100, 200, 300, 400, 500];
 
@@ -124,6 +129,8 @@ function preload()
 function setup() {
     createCanvas(screenWidth, screenHeight);
 
+    frameRate(60);
+
     player = new Player();
 
     highscore = localStorage.getItem("highscore");
@@ -158,13 +165,20 @@ function StartGame()
 function update(){
     //Update all game objects
 
+    let millis = Millis();
+
+    deltaTime = millis - lastTime;
+    console.log(deltaTime);
+
+    lastTime = millis;
+
     //Update player
     player.Update();
 
     //Check if player should be respawned
     if(player.isDead)
     {
-        if(Millis() > (player.deadTime + playerDeadDelay))
+        if(millis > (player.deadTime + playerDeadDelay))
         {
             if(player.lives <= 0)
             {
@@ -213,7 +227,7 @@ function update(){
     }
 
     //Enemy move
-    if(Millis() > (lastEnemyMove + enemyStepDelay))
+    if(millis > (lastEnemyMove + enemyStepDelay))
     {
         let switchDirection = false;
 
@@ -232,7 +246,7 @@ function update(){
             }
         }
         else enemyDown = false;
-        lastEnemyMove = Millis();
+        lastEnemyMove = millis;
     }
 
     //Ufo move
@@ -244,11 +258,11 @@ function update(){
     //Ufo text
     for(var i = ufoText.length - 1; i>=0; i--)
     {
-        if(Millis() > (ufoText[i].startTime + ufoTextDelay)) ufoText.splice(i, 1);
+        if(millis > (ufoText[i].startTime + ufoTextDelay)) ufoText.splice(i, 1);
     }
 
     //Enemy shoot
-    if(Millis() > (lastEnemyShoot + enemyShootDelay))
+    if(millis > (lastEnemyShoot + enemyShootDelay))
     {
         if(enemies.length > 0)
         {
@@ -256,7 +270,7 @@ function update(){
 
             enemies[randomIndex].Shoot();
     
-            lastEnemyShoot = Millis();
+            lastEnemyShoot = millis;
         }
     }
 }

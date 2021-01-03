@@ -17,7 +17,7 @@ class Ufo{
         let x = this.x + (ufoWidth / 2);
         if(x <= 100 || x >= (screenWidth - 100)) this.moveDirection *= -1;
 
-        this.x += this.speed * this.moveDirection;
+        this.x += this.speed * this.moveDirection * deltaTime;
     }
 
     Draw()
