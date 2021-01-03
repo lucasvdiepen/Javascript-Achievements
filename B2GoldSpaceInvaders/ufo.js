@@ -3,9 +3,9 @@ class Ufo{
     speed = 15;
     x = -1;
     moveDirection = 1;
+    wallTouches = 0;
 
-
-    constructor(_x, _speed = defaultUfoSpeed, _sprite = ufoSprite, )
+    constructor(_x, _speed = defaultUfoSpeed, _sprite = ufoSprite)
     {
         this.x = _x;
         this.sprite = _sprite;
@@ -15,7 +15,12 @@ class Ufo{
     Update()
     {
         let x = this.x + (ufoWidth / 2);
-        if(x <= 100 || x >= (screenWidth - 100)) this.moveDirection *= -1;
+        if(x <= 100 || x >= (screenWidth - 100)) {
+            this.moveDirection *= -1;
+            this.wallTouches += 1;
+
+            if(this.wallTouches >= ufoWallTouches) return true; //removes this ufo
+        }
 
         this.x += this.speed * this.moveDirection * deltaTime;
     }

@@ -11,6 +11,8 @@ let ufoSprite;
 let ufoExplosionSprite;
 
 //Game values
+let gameRunning = false;
+
 let highscore = 0;
 
 let startingLives = 3;
@@ -25,7 +27,7 @@ let playerWidth = 50;
 let playerHeight = 50;
 let playerDeadDelay = 2000;
 let playerShootDelay = 500;
-let playerSpeed = 0.5;
+let playerSpeed = 0.45;
 
 //Bullet values
 let bullets = [];
@@ -40,6 +42,7 @@ let explosionHeight = 40;
 
 //Enemy values
 let enemies = [];
+let enemyStartingHeight = 100;
 let enemyDirection = 1;
 let enemyDown = false;
 let enemyStartingStepDelay = 1500;
@@ -57,9 +60,10 @@ let lastEnemyShoot = -3000;
 let ufos = [];
 let ufoWidth = 60;
 let ufoHeight = 40;
-let defaultUfoSpeed = 0.3;
-let ufoStartHeight = 100;
+let defaultUfoSpeed = 0.15;
+let ufoStartHeight = 50;
 let ufoPoints = [100, 200, 300, 400, 500];
+let ufoWallTouches = 2;
 
 //Screen values
 let screenWidth = 1200;
@@ -79,8 +83,9 @@ let ufoText = [];
 let ufoTextDelay = 2000;
 
 function SpawnEnemies(){
+    enemyStepDelay = enemyStartingStepDelay;
     x = 200;
-    y = 50;
+    y = enemyStartingHeight;
     for(var j = 0; j < 5; j++)
     {
         let sprite = null;
@@ -153,13 +158,32 @@ function StartGame()
 
     ufos.push(new Ufo(150));
 
-    obstacles.push(new Obstacle(270));
-    obstacles.push(new Obstacle(570));
-    obstacles.push(new Obstacle(870));
+    SpawnObstacles();
 
     enemyStepDelay = enemyStartingStepDelay;
 
     player.Reset();
+
+    gameRunning = true;
+}
+
+function GameOver()
+{
+    gameRunning = false;
+}
+
+function SpawnObstacles()
+{
+    obstacles.push(new Obstacle(270));
+    obstacles.push(new Obstacle(570));
+    obstacles.push(new Obstacle(870));
+}
+
+function RespawnObjects()
+{
+    SpawnEnemies();
+    obstacles = [];
+    SpawnObstacles();
 }
 
 function update(){
@@ -203,8 +227,7 @@ function update(){
     {
         if(enemies.length <= 0)
         {
-            enemyStepDelay = enemyStartingStepDelay;
-            SpawnEnemies();
+            RespawnObjects();
         }
     }
 
@@ -250,9 +273,9 @@ function update(){
     }
 
     //Ufo move
-    for(var i = 0; i < ufos.length; i++)
+    for(var i = ufos.length - 1; i>=0; i--)
     {
-        ufos[i].Update();
+        if(ufos[i].Update()) ufos.splice(i, 1);
     }
 
     //Ufo text
