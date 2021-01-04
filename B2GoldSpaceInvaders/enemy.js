@@ -35,6 +35,7 @@ class Enemy{
             {
                 //game over
                 console.log("Game over!");
+                GameOver();
             }
         }
         else this.x += enemySideStep * enemyDirection;

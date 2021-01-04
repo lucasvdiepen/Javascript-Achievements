@@ -13,6 +13,8 @@ let ufoExplosionSprite;
 //Game values
 let gameRunning = false;
 
+let screen = 0;
+
 let highscore = 0;
 
 let startingLives = 3;
@@ -136,7 +138,15 @@ function preload()
 }
 
 function setup() {
-    createCanvas(screenWidth, screenHeight);
+    let cnv = createCanvas(screenWidth, screenHeight);
+
+    let w = window.innerWidth;
+    let h = window.innerHeight;
+
+    let leftOffset = (w - screenWidth) / 2;
+    let topOffset = (h - screenHeight) / 2;
+
+    cnv.position(leftOffset, topOffset, 'fixed');
 
     frameRate(60);
 
@@ -145,7 +155,7 @@ function setup() {
     highscore = localStorage.getItem("highscore");
     if(highscore == null) highscore = 0;
 
-    StartGame();
+    //StartGame();
 }
 
 function StartGame()
@@ -171,11 +181,13 @@ function StartGame()
     lastUfoSpawn = Millis();
 
     gameRunning = true;
+    screen = 1;
 }
 
 function GameOver()
 {
     gameRunning = false;
+    screen = 2;
 }
 
 function SpawnObstacles()
@@ -220,7 +232,8 @@ function update(){
                     localStorage.setItem("highscore", player.points);
                 }
 
-                StartGame();
+                //StartGame();
+                GameOver();
             }
             else
             {
@@ -317,63 +330,92 @@ function draw() {
     //Draw
     background(220);
     
-    //Draw player
-    player.Draw();
-
-    //Draw bullets
-    for(var i = 0; i < bullets.length; i++)
+    if(screen == 0)
     {
-        bullets[i].Draw();
+        fill(255);
+        textSize(45);
+        textAlign(CENTER);
+        text("Space Invaders", screenWidth / 2, 200);
+        textSize(25);
+        text("Press space to start", screenWidth / 2, 500);
     }
-
-    //Draw enemies
-    for(var i = 0; i < enemies.length; i++)
+    else if(screen == 1)
     {
-        enemies[i].Draw();
-    }
+        //Draw player
+        player.Draw();
 
-    //Draw ufos
-    for(var i = 0; i < ufos.length; i++)
+        //Draw bullets
+        for(var i = 0; i < bullets.length; i++)
+        {
+            bullets[i].Draw();
+        }
+
+        //Draw enemies
+        for(var i = 0; i < enemies.length; i++)
+        {
+            enemies[i].Draw();
+        }
+
+        //Draw ufos
+        for(var i = 0; i < ufos.length; i++)
+        {
+            ufos[i].Draw();
+        }
+
+        //Draw explosions
+        for(var i = 0; i < explosions.length; i++)
+        {
+            explosions[i].Draw();
+        }
+
+        //Draw obstacles
+        for(var i = 0; i < obstacles.length; i++)
+        {
+            obstacles[i].Draw();
+        }
+
+        //Draw ufo text
+        for(var i = 0; i < ufoText.length; i++)
+        {
+            ufoText[i].Draw();
+        }
+
+        //Draw text
+        textSize(25);
+        fill(0);
+        textAlign(LEFT);
+        text("Lives: " + player.lives, 10, 27);
+        text("Points: " + player.points, 10, 55);
+
+        textAlign(RIGHT);
+        text("Highscore: " + highscore, 1190, 27);
+    }
+    else if(screen == 2)
     {
-        ufos[i].Draw();
+        fill(255, 0, 0);
+        textSize(45);
+        textAlign(CENTER);
+        text("Game over", screenWidth / 2, 200);
+        fill(255);
+        textSize(25);
+        text("Press space to play again", screenWidth / 2, 500);
     }
-
-    //Draw explosions
-    for(var i = 0; i < explosions.length; i++)
-    {
-        explosions[i].Draw();
-    }
-
-    //Draw obstacles
-    for(var i = 0; i < obstacles.length; i++)
-    {
-        obstacles[i].Draw();
-    }
-
-    //Draw ufo text
-    for(var i = 0; i < ufoText.length; i++)
-    {
-        ufoText[i].Draw();
-    }
-
-    //Draw text
-    textSize(25);
-    fill(0);
-    textAlign(LEFT);
-    text("Lives: " + player.lives, 10, 27);
-    text("Points: " + player.points, 10, 55);
-
-    textAlign(RIGHT);
-    text("Highscore: " + highscore, 1190, 27);
 }
 
 function keyPressed()
 {
-    if(keyCode == LEFT_ARROW) player.leftPressed = true;
-    else if(keyCode == RIGHT_ARROW) player.rightPressed = true;
-    else if(keyCode == 32) player.Shoot();
-    else if(keyCode == UP_ARROW) obstacles[0].rows[0].skipAbove += 1;
-    else if(keyCode == DOWN_ARROW) obstacles[0].rows[0].skipBelow += 1;
+    if(gameRunning)
+    {
+        if(keyCode == LEFT_ARROW) player.leftPressed = true;
+        else if(keyCode == RIGHT_ARROW) player.rightPressed = true;
+        else if(keyCode == 32) player.Shoot();
+        else if(keyCode == UP_ARROW) obstacles[0].rows[0].skipAbove += 1;
+        else if(keyCode == DOWN_ARROW) obstacles[0].rows[0].skipBelow += 1;
+    }
+    else
+    {
+        if(keyCode == 32) StartGame();
+    }
 }
 
 function keyReleased()
