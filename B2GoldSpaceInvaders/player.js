@@ -26,6 +26,7 @@ class Player {
 
     Hit()
     {
+        explosionSound.play();
         this.lives -= 1;
         this.isDead = true;
         this.deadTime = Millis();
@@ -73,7 +74,7 @@ class Player {
     {
         if(!this.isDead)
         {
-            playerSprite.resize(enemyHeight, enemyWidth);
+            playerSprite.resize(playerWidth, playerHeight);
             image(player.sprite, player.x, playerStartHeight);
         }
     }
@@ -85,9 +86,9 @@ class Player {
             if(Millis() > (this.shootTime + playerShootDelay))
             {
                 bullets.push(new Bullet(this.x + (playerWidth / 2), playerStartHeight, -1));
+                shootSound.play();
                 this.shootTime = Millis();
             }
-            
         }
     }
 }

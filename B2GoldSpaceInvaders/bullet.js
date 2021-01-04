@@ -51,6 +51,9 @@ class Bullet{
                 {
                     //spawn explosion effect
                     explosions.push(new Explosion(explosionSprite, enemies[i].x, enemies[i].y, explosionWidth, explosionHeight));
+
+                    //play explosion sound
+                    invaderKilledSound.play();
                     
                     //add points
                     player.points += enemies[i].pointsToAdd;
@@ -74,7 +77,12 @@ class Bullet{
 
                     player.points += ufoPointsToAdd;
 
+                    //play explosion sound
+                    invaderKilledSound.play();
+
                     ufos.splice(i, 1);
+                    ufoSound.stop();
+
                     return true; //removes this bullet
                 }
             }
@@ -101,7 +109,7 @@ class Bullet{
 
     Draw()
     {
-        stroke(0);
+        stroke(255);
         line(this.x, this.y, this.x, this.y - 10);
     }
 }

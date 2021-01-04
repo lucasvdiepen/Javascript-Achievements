@@ -25,8 +25,8 @@ let deltaTime = 0;
 //Player values
 let player;
 let playerStartHeight = 620;
-let playerWidth = 50;
-let playerHeight = 50;
+let playerWidth = 40;
+let playerHeight = 40;
 let playerDeadDelay = 2000;
 let playerShootDelay = 500;
 let playerSpeed = 0.45;
@@ -88,6 +88,32 @@ let blocksInRow = 10;
 let ufoText = [];
 let ufoTextDelay = 2000;
 
+//sound values
+
+Howler.volume(0.3);
+
+shootSound = new Howl({
+    src: ['SoundEffects/shoot.wav'],
+    autoplay: false
+});
+
+invaderKilledSound = new Howl({
+    src: ['SoundEffects/invaderkilled.wav'],
+    autoplay: false
+});
+
+explosionSound = new Howl({
+    src: ['SoundEffects/explosion.wav'],
+    autoplay: false
+});
+
+ufoSound = new Howl({
+    src: ['SoundEffects/ufo_highpitch.wav'],
+    autoplay: false,
+    loop: true,
+    volume: 0.1
+});
+
 function SpawnEnemies(){
     enemyStepDelay = enemyStartingStepDelay;
     x = 200;
@@ -143,8 +169,16 @@ function setup() {
     let w = window.innerWidth;
     let h = window.innerHeight;
 
-    let leftOffset = (w - screenWidth) / 2;
-    let topOffset = (h - screenHeight) / 2;
+    let left = w - screenWidth;
+    let top = h - screenHeight;
+    let leftOffset = 0;
+    let topOffset = 0;
+
+    if(left > 0 && top > 0)
+    {
+        leftOffset = left / 2;
+        topOffset = top / 2;
+    }
 
     cnv.position(leftOffset, topOffset, 'fixed');
 
@@ -186,6 +220,7 @@ function StartGame()
 
 function GameOver()
 {
+    ufoSound.stop();
     gameRunning = false;
     screen = 2;
 }
@@ -293,13 +328,14 @@ function update(){
     //Ufo move
     for(var i = ufos.length - 1; i>=0; i--)
     {
-        if(ufos[i].Update()) ufos.splice(i, 1);
+        if(ufos[i].Update()) { ufos.splice(i, 1); ufoSound.stop(); };
     }
 
     //spawn ufo
     if(millis > (lastUfoSpawn + ufoSpawnDelay))
     {
         ufos.push(new Ufo());
+        ufoSound.play();
         lastUfoSpawn = millis;
     }
 
@@ -324,11 +360,8 @@ function update(){
 }
 
 function draw() {
-    //Update game logic
-    update()
-
     //Draw
-    background(220);
+    background(0);
     
     if(screen == 0)
     {
@@ -341,6 +374,9 @@ function draw() {
     }
     else if(screen == 1)
     {
+        //Update game logic
+        update()
+
         //Draw player
         player.Draw();
 
@@ -379,16 +415,6 @@ function draw() {
         {
             ufoText[i].Draw();
         }
-
-        //Draw text
-        textSize(25);
-        fill(0);
-        textAlign(LEFT);
-        text("Lives: " + player.lives, 10, 27);
-        text("Points: " + player.points, 10, 55);
-
-        textAlign(RIGHT);
-        text("Highscore: " + highscore, 1190, 27);
     }
     else if(screen == 2)
     {
@@ -400,6 +426,24 @@ function draw() {
         textSize(25);
         text("Press space to play again", screenWidth / 2, 500);
     }
+
+    //Draw scores
+    textSize(25);
+    fill(255);
+    textAlign(LEFT);
+    text("Lives: " + player.lives, 10, 27);
+    text("Points: " + player.points, 10, 55);
+
+    textAlign(RIGHT);
+    text("Highscore: " + highscore, 1190, 27);
+
+    //Draw edge lines
+    fill(128, 128, 128);
+    noStroke();
+    rect(0, 0, screenWidth, 2);
+    rect(0, 0, 2, screenHeight);
+    rect(screenWidth - 2, 0, 2, screenHeight);
+    rect(0, screenHeight - 2, screenWidth, 2);
 }
 
 function keyPressed()
