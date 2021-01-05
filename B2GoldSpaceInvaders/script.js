@@ -371,6 +371,9 @@ function draw() {
         text("Space Invaders", screenWidth / 2, 200);
         textSize(25);
         text("Press space to start", screenWidth / 2, 500);
+        textAlign(LEFT);
+        text("Use space to shoot", 10, 640);
+        text("Use left and right arrow keys to move", 10, 680);
     }
     else if(screen == 1)
     {
