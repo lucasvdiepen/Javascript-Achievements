@@ -374,6 +374,28 @@ function draw() {
         textAlign(LEFT);
         text("Use space to shoot", 10, 640);
         text("Use left and right arrow keys to move", 10, 680);
+
+        //draw enemy points
+
+        //enemy 1
+        enemySprite.resize(40, 40);
+        image(enemySprite, 997, 420);
+        text("= 10 points", 1060, 451);
+
+        //enemy2
+        enemy2Sprite.resize(40, 40);
+        image(enemy2Sprite, 997, 490);
+        text("= 20 points", 1060, 522)
+
+        //enemy 3
+        enemy3Sprite.resize(40, 40);
+        image(enemy3Sprite, 995, 560);
+        text("= 30 points", 1060, 593)
+
+        //ufo
+        ufoSprite.resize(60, 40);
+        image(ufoSprite, 983, 630);
+        text("= ? points", 1060, 660);
     }
     else if(screen == 1)
     {
