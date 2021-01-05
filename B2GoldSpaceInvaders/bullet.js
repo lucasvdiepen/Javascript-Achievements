@@ -25,7 +25,7 @@ class Bullet{
                 let above = false;
                 if(this.direction == -1)
                 {
-                    if(this.y <= obstacleStartHeight){ hit = true; above = false; }
+                    if(this.y <= (obstacleStartHeight + 15)){ hit = true; above = false; }
                 }
                 else if(this.direction == 1)
                 {
