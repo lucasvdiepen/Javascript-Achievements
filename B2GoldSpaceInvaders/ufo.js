@@ -27,7 +27,6 @@ class Ufo{
 
     Draw()
     {
-        this.sprite.resize(ufoWidth, ufoHeight);
         image(this.sprite, this.x, ufoStartHeight);
     }
 }

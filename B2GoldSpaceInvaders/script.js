@@ -184,6 +184,16 @@ function setup() {
 
     frameRate(60);
 
+    //resize all sprites
+    playerSprite.resize(playerWidth, playerHeight);
+    enemySprite.resize(enemyWidth, enemyHeight);
+    enemyWalkSprite.resize(enemyWidth, enemyHeight);
+    enemy2Sprite.resize(enemyWidth, enemyHeight);
+    enemy2WalkSprite.resize(enemyWidth, enemyHeight);
+    enemy3Sprite.resize(enemyWidth, enemyHeight);
+    enemy3WalkSprite.resize(enemyWidth, enemyHeight);
+    ufoSprite.resize(ufoWidth, ufoHeight);
+
     player = new Player();
 
     highscore = localStorage.getItem("highscore");
@@ -378,22 +388,18 @@ function draw() {
         //draw enemy points
 
         //enemy 1
-        enemySprite.resize(40, 40);
         image(enemySprite, 997, 420);
         text("= 10 points", 1060, 451);
 
         //enemy2
-        enemy2Sprite.resize(40, 40);
         image(enemy2Sprite, 997, 490);
         text("= 20 points", 1060, 522)
 
         //enemy 3
-        enemy3Sprite.resize(40, 40);
         image(enemy3Sprite, 995, 560);
         text("= 30 points", 1060, 593)
 
         //ufo
-        ufoSprite.resize(60, 40);
         image(ufoSprite, 983, 630);
         text("= ? points", 1060, 660);
     }

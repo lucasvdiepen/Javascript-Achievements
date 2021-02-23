@@ -74,7 +74,6 @@ class Player {
     {
         if(!this.isDead)
         {
-            playerSprite.resize(playerWidth, playerHeight);
             image(player.sprite, player.x, playerStartHeight);
         }
     }

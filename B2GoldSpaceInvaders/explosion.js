@@ -1,4 +1,4 @@
-class Explosion{
+    class Explosion{
     x = -1;
     y = -1;
     end = -1;
@@ -12,6 +12,7 @@ class Explosion{
         this.sprite = _sprite;
         this.width = _width;
         this.height = _height;
+        this.sprite.resize(this.width, this.height);
         this.end = Millis() + explosionTime;
     }
 
@@ -22,7 +23,6 @@ class Explosion{
 
     Draw()
     {
-        this.sprite.resize(this.width, this.height);
         image(this.sprite, this.x, this.y);
     }
 }
